@@ -6,11 +6,88 @@
 /*   By: tubaaydogan <tubaaydogan@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:15:23 by tubaaydogan       #+#    #+#             */
-/*   Updated: 2022/12/06 13:12:44 by tubaaydogan      ###   ########.fr       */
+/*   Updated: 2022/12/09 15:22:33 by tubaaydogan      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 
+int ft_check(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != '\n')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+	size_t	alan;
+
+	if (!s1 || !s2)
+		return (NULL);
+	alan = (ft_strlen(s1) + ft_strlen(s2));
+	str = malloc(sizeof(char) * alan + 1);
+	i = -1;
+	j = -1;
+	if (!str)
+		return (NULL);
+	while (s1[++i])
+		str[i] = s1[i];
+	while (s2[++j])
+		str[i++] = s2[j];
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*str;
+	size_t	i;
+	size_t	strsayac;
+
+	i = -1;
+	strsayac = -1;
+	if (!s)
+		return (0);
+	if (start >= ft_strlen((char *)s))
+		return (ft_strdup(""));
+	if (len > ft_strlen(s))
+		str = malloc(sizeof(char) * ft_strlen(s) + 1);
+	else
+		str = malloc(sizeof(char) * len + 1);
+	if (!str)
+		return (0);
+	while (s[start] && ++i <= len)
+	{
+		str[++strsayac] = (char)s[start];
+		start++;
+	}
+	str[len] = '\0';
+	return(str);
+}
+
+size_t		ft_strlen(const char *s)
+{
+	int i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
 
 char	*ft_strdup(const char *s1)
 {
@@ -22,57 +99,21 @@ char	*ft_strdup(const char *s1)
 	if (!rtn)
 		return (0);
 	rtn = ft_memcpy(rtn, s1, len);
-	rtn = ft_free (rtn);
 	return (rtn);
 }
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	size_t	i;
+	char		*dstc;
+	const char	*srccc;
 
+	if ((dst == src) || n == 0)
+		return (dst);
 	if (!dst && !src)
-	{
 		return (0);
-	}
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *) dst)[i] = ((unsigned char *) src)[i];
-		i++;
-	}
+	dstc = (char *)dst;
+	srccc = (const char *)src;
+	while (n--)
+		dstc[n] = srccc[n];
 	return (dst);
-}
-
-void
-	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-
-	ptr = (void *)malloc(count * size);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, count * size);
-	return (ptr);
-}
-
-#include "libft.h"
-
-void	ft_bzero(void *s, size_t n)
-{
-	ft_memset(s, 0, n);
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t			i;
-
-	if (!b)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		*(unsigned char *)(b + i) = (unsigned char) c;
-		i++;
-	}
-	return (b);
 }
